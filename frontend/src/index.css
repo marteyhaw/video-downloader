@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warn: var(--warn);
+  --color-warn-border: var(--warn-border);
+  --color-accent-muted: var(--accent-muted);
+  --color-badge-ytdlp: var(--badge-ytdlp);
+  --color-badge-playwright: var(--badge-playwright);
+  --color-badge-resolution: var(--badge-resolution);
+  --color-badge-muted: var(--badge-muted);
+  --color-badge-audio: var(--badge-audio);
+  --color-badge-audio-warn: var(--badge-audio-warn);
+
+  --radius-lg: 10px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+}
+
+/* neutral */
+[data-palette="neutral"][data-mode="light"] {
+  --background: #f4f5f7;
+  --surface: #ffffff;
+  --surface-hover: #eceef2;
+  --border: #d8dce6;
+  --foreground: #1a1d27;
+  --muted: #5c6578;
+  --accent: #4a7ce8;
+  --accent-hover: #3b6ad4;
+  --accent-muted: rgba(74, 124, 232, 0.12);
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warn: #b45309;
+  --warn-border: #f59e0b;
+  --badge-ytdlp: #2563eb;
+  --badge-playwright: #7c3aed;
+  --badge-resolution: #2563eb;
+  --badge-muted: #5c6578;
+  --badge-audio: #16a34a;
+  --badge-audio-warn: #d97706;
+}
+
+[data-palette="neutral"][data-mode="dark"] {
+  --background: #0f1117;
+  --surface: #1a1d27;
+  --surface-hover: #242836;
+  --border: #2e3344;
+  --foreground: #e8eaef;
+  --muted: #9aa3b5;
+  --accent: #5b8def;
+  --accent-hover: #7aa3f5;
+  --accent-muted: rgba(91, 141, 239, 0.12);
+  --success: #4ade80;
+  --danger: #f87171;
+  --warn: #fcd34d;
+  --warn-border: #fbbf24;
+  --badge-ytdlp: #93c5fd;
+  --badge-playwright: #c4b5fd;
+  --badge-resolution: #93c5fd;
+  --badge-muted: #9aa3b5;
+  --badge-audio: #4ade80;
+  --badge-audio-warn: #fcd34d;
+}
+
+/* ocean (cool) */
+[data-palette="ocean"][data-mode="light"] {
+  --background: #f0f6fc;
+  --surface: #ffffff;
+  --surface-hover: #e3eef9;
+  --border: #c5d9ef;
+  --foreground: #0f2744;
+  --muted: #4a6a8a;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-muted: rgba(37, 99, 235, 0.12);
+  --success: #059669;
+  --danger: #dc2626;
+  --warn: #b45309;
+  --warn-border: #f59e0b;
+  --badge-ytdlp: #1d4ed8;
+  --badge-playwright: #4f46e5;
+  --badge-resolution: #2563eb;
+  --badge-muted: #4a6a8a;
+  --badge-audio: #059669;
+  --badge-audio-warn: #d97706;
+}
+
+[data-palette="ocean"][data-mode="dark"] {
+  --background: #0a1628;
+  --surface: #122038;
+  --surface-hover: #1a2d4d;
+  --border: #243a5c;
+  --foreground: #e8f0fa;
+  --muted: #8ba3c4;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-muted: rgba(59, 130, 246, 0.15);
+  --success: #34d399;
+  --danger: #f87171;
+  --warn: #fcd34d;
+  --warn-border: #fbbf24;
+  --badge-ytdlp: #93c5fd;
+  --badge-playwright: #a5b4fc;
+  --badge-resolution: #93c5fd;
+  --badge-muted: #8ba3c4;
+  --badge-audio: #34d399;
+  --badge-audio-warn: #fcd34d;
+}
+
+/* frost (cool) */
+[data-palette="frost"][data-mode="light"] {
+  --background: #f0fafa;
+  --surface: #ffffff;
+  --surface-hover: #e6f4f4;
+  --border: #c8e6e6;
+  --foreground: #0f2e2e;
+  --muted: #4a6b6b;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --accent-muted: rgba(8, 145, 178, 0.12);
+  --success: #059669;
+  --danger: #dc2626;
+  --warn: #b45309;
+  --warn-border: #f59e0b;
+  --badge-ytdlp: #0e7490;
+  --badge-playwright: #6366f1;
+  --badge-resolution: #0891b2;
+  --badge-muted: #4a6b6b;
+  --badge-audio: #059669;
+  --badge-audio-warn: #d97706;
+}
+
+[data-palette="frost"][data-mode="dark"] {
+  --background: #0a1418;
+  --surface: #122024;
+  --surface-hover: #1a2e34;
+  --border: #2a4248;
+  --foreground: #e6f4f4;
+  --muted: #8fb4b4;
+  --accent: #22d3ee;
+  --accent-hover: #67e8f9;
+  --accent-muted: rgba(34, 211, 238, 0.12);
+  --success: #34d399;
+  --danger: #f87171;
+  --warn: #fcd34d;
+  --warn-border: #fbbf24;
+  --badge-ytdlp: #67e8f9;
+  --badge-playwright: #a5b4fc;
+  --badge-resolution: #67e8f9;
+  --badge-muted: #8fb4b4;
+  --badge-audio: #34d399;
+  --badge-audio-warn: #fcd34d;
+}
+
+/* sunset (warm) */
+[data-palette="sunset"][data-mode="light"] {
+  --background: #fffaf3;
+  --surface: #ffffff;
+  --surface-hover: #fff3e0;
+  --border: #f0dcc4;
+  --foreground: #3d2814;
+  --muted: #8a6b4a;
+  --accent: #d97706;
+  --accent-hover: #b45309;
+  --accent-muted: rgba(217, 119, 6, 0.12);
+  --success: #059669;
+  --danger: #dc2626;
+  --warn: #b45309;
+  --warn-border: #f59e0b;
+  --badge-ytdlp: #b45309;
+  --badge-playwright: #a16207;
+  --badge-resolution: #d97706;
+  --badge-muted: #8a6b4a;
+  --badge-audio: #059669;
+  --badge-audio-warn: #d97706;
+}
+
+[data-palette="sunset"][data-mode="dark"] {
+  --background: #1a1208;
+  --surface: #261a0c;
+  --surface-hover: #352412;
+  --border: #4a3520;
+  --foreground: #faf0e4;
+  --muted: #c4a882;
+  --accent: #f59e0b;
+  --accent-hover: #fbbf24;
+  --accent-muted: rgba(245, 158, 11, 0.15);
+  --success: #34d399;
+  --danger: #f87171;
+  --warn: #fcd34d;
+  --warn-border: #fbbf24;
+  --badge-ytdlp: #fbbf24;
+  --badge-playwright: #fcd34d;
+  --badge-resolution: #fbbf24;
+  --badge-muted: #c4a882;
+  --badge-audio: #34d399;
+  --badge-audio-warn: #fcd34d;
+}
+
+/* ember (warm) */
+[data-palette="ember"][data-mode="light"] {
+  --background: #fff5f5;
+  --surface: #ffffff;
+  --surface-hover: #ffe8e8;
+  --border: #f0d0d0;
+  --foreground: #3d1414;
+  --muted: #8a5a5a;
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  --accent-muted: rgba(234, 88, 12, 0.12);
+  --success: #059669;
+  --danger: #dc2626;
+  --warn: #b45309;
+  --warn-border: #f59e0b;
+  --badge-ytdlp: #c2410c;
+  --badge-playwright: #be123c;
+  --badge-resolution: #ea580c;
+  --badge-muted: #8a5a5a;
+  --badge-audio: #059669;
+  --badge-audio-warn: #d97706;
+}
+
+[data-palette="ember"][data-mode="dark"] {
+  --background: #1a0c0a;
+  --surface: #261210;
+  --surface-hover: #351a16;
+  --border: #4a2824;
+  --foreground: #faf0ee;
+  --muted: #c4a098;
+  --accent: #f97316;
+  --accent-hover: #fb923c;
+  --accent-muted: rgba(249, 115, 22, 0.15);
+  --success: #34d399;
+  --danger: #f87171;
+  --warn: #fcd34d;
+  --warn-border: #fbbf24;
+  --badge-ytdlp: #fb923c;
+  --badge-playwright: #fda4af;
+  --badge-resolution: #fb923c;
+  --badge-muted: #c4a098;
+  --badge-audio: #34d399;
+  --badge-audio-warn: #fcd34d;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    background: var(--background);
+    line-height: 1.5;
+  }
+}
+
+@layer components {
+  .scroll-fab {
+    transition:
+      opacity 300ms ease-out,
+      transform 300ms ease-out;
+  }
+
+  .dialog-overlay {
+    transition: opacity 300ms ease-out;
+  }
+
+  .dialog-panel {
+    transition:
+      opacity 300ms ease-out,
+      transform 300ms ease-out;
+  }
+
+  .filter-chip-enter {
+    animation: filter-chip-fade 200ms ease-out forwards;
+  }
+
+  .toast-enter {
+    animation: toast-fade-in 220ms ease-out forwards;
+  }
+
+  @keyframes filter-chip-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes toast-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .scroll-fab,
+    .dialog-overlay,
+    .dialog-panel {
+      transition-duration: 0.01ms;
+    }
+
+    .filter-chip-enter,
+    .toast-enter {
+      animation: none;
+    }
+  }
+
+  /* CSS ::after tooltips — Tooltip variant="text" only (not icon actions) */
+  .tooltip-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .tooltip-wrap .tooltip-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .tooltip-wrap::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 6px);
+    z-index: 100;
+    max-width: min(480px, 90vw);
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+    color: var(--foreground);
+    background: var(--surface-hover);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.12s,
+      visibility 0.12s;
+  }
+
+  .tooltip-wrap:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
