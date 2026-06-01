@@ -1,45 +1,37 @@
 """Integration tests for history endpoints."""
 
-import pytest
-from fastapi.testclient import TestClient
-
-from backend.main import app
+from httpx import AsyncClient
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-
-def test_list_history_default(client):
-    resp = client.get("/api/history")
+async def test_list_history_default(test_client: AsyncClient):
+    resp = await test_client.get("/api/history")
     assert resp.status_code == 200
     assert isinstance(resp.json(), list)
 
 
-def test_list_history_pagination(client):
-    resp = client.get("/api/history?limit=5&offset=0")
+async def test_list_history_pagination(test_client: AsyncClient):
+    resp = await test_client.get("/api/history?limit=5&offset=0")
     assert resp.status_code == 200
     assert isinstance(resp.json(), list)
 
 
-def test_list_history_invalid_limit(client):
-    resp = client.get("/api/history?limit=0")
+async def test_list_history_invalid_limit(test_client: AsyncClient):
+    resp = await test_client.get("/api/history?limit=0")
     assert resp.status_code == 422
 
 
-def test_delete_nonexistent_history(client):
-    resp = client.delete("/api/history/999999")
+async def test_delete_nonexistent_history(test_client: AsyncClient):
+    resp = await test_client.delete("/api/history/999999")
     assert resp.status_code == 404
 
 
-def test_rename_nonexistent_history(client):
-    resp = client.patch("/api/history/999999", json={"display_name": "new_name"})
+async def test_rename_nonexistent_history(test_client: AsyncClient):
+    resp = await test_client.patch("/api/history/999999", json={"display_name": "new_name"})
     assert resp.status_code == 404
 
 
-def test_reveal_nonexistent_history(client):
-    resp = client.post("/api/history/999999/reveal")
+async def test_reveal_nonexistent_history(test_client: AsyncClient):
+    resp = await test_client.post("/api/history/999999/reveal")
     assert resp.status_code == 404
 
 
