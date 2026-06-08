@@ -35,7 +35,7 @@ dev = [
     "pytest-cov==7.1.0",
     "httpx==0.28.1",
     "pre-commit==4.6.0",
-    "ruff==0.15.14",
+    "ruff==0.15.16",
 ]
 
 [tool.pytest.ini_options]
