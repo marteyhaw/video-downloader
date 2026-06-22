@@ -18,8 +18,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0(vite@8.0.16(jiti@2.7.0))
       '@tanstack/react-query':
-        specifier: 5.62.0
-        version: 5.62.0(react@18.3.1)
+        specifier: 5.101.0
+        version: 5.101.0(react@18.3.1)
       lucide-react:
         specifier: 1.16.0
         version: 1.16.0(react@18.3.1)
@@ -557,11 +557,11 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
 
-  '@tanstack/query-core@5.62.0':
-    resolution: {integrity: sha512-sx38bGrqF9bop92AXOvzDr0L9fWDas5zXdPglxa9cuqeVSWS7lY6OnVyl/oodfXjgOGRk79IfCpgVmxrbHuFHg==}
+  '@tanstack/query-core@5.101.0':
+    resolution: {integrity: sha512-cQetA74EB+seWySv1TTKr828TnP0u39m6LykwDXIo84SNortpDkp30TMEjkqtYCNP9c40uT/iwl6MLiufEt0Ow==}
 
-  '@tanstack/react-query@5.62.0':
-    resolution: {integrity: sha512-tj2ltjAn2a3fs+Dqonlvs6GyLQ/LKVJE2DVSYW+8pJ3P6/VCVGrfqv5UEchmlP7tLOvvtZcOuSyI2ooVlR5Yqw==}
+  '@tanstack/react-query@5.101.0':
+    resolution: {integrity: sha512-rLlJXSpkqfizLWgkR5+eLeIk0MvTx/meEIR7LRjxic+qxiQP8zVjq7BqQkiCMNLQBlLfuOLqqr6KO5GtrDlmSg==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -1276,11 +1276,11 @@ snapshots:
       tailwindcss: 4.3.0
       vite: 8.0.16(jiti@2.7.0)
 
-  '@tanstack/query-core@5.62.0': {}
+  '@tanstack/query-core@5.101.0': {}
 
-  '@tanstack/react-query@5.62.0(react@18.3.1)':
+  '@tanstack/react-query@5.101.0(react@18.3.1)':
     dependencies:
-      '@tanstack/query-core': 5.62.0
+      '@tanstack/query-core': 5.101.0
       react: 18.3.1
 
   '@tybys/wasm-util@0.10.2':
