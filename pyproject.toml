@@ -12,7 +12,7 @@ dependencies = [
     "yt-dlp[curl-cffi]==2026.3.17",
     "m3u8==6.0.0",
     "httpx==0.28.1",
-    "sqlalchemy==2.0.50",
+    "sqlalchemy==2.0.51",
     "aiosqlite==0.22.1",
     "filetype==1.2.0",
     "pydantic-settings==2.14.1",
