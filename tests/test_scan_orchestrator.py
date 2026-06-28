@@ -1,3 +1,4 @@
+import contextlib
 from unittest.mock import patch
 
 from backend.config import settings
@@ -157,10 +158,9 @@ def test_embed_scan_aborts_after_consecutive_failures():
             return_value=([], "Page", PageEmbeds(urls={"embed": vimeo_urls})),
         ),
     ):
-        try:
+        # No media is found here; we assert on the failure-cap side effect below.
+        with contextlib.suppress(ScanFailedError):
             run_scan("https://example.com/page", progress=noop_progress)
-        except ScanFailedError:
-            pass
 
     assert call_count == _MAX_CONSECUTIVE_EMBED_FAILURES
 
@@ -214,10 +214,9 @@ def test_run_scan_uses_sync_playwright_not_coroutine():
             return_value=([], "", PageEmbeds()),
         ) as mock_pw,
     ):
-        try:
+        # Empty results raise ScanFailedError; we only care that Playwright ran.
+        with contextlib.suppress(ScanFailedError):
             run_scan("https://example.com/page", progress=noop_progress)
-        except ScanFailedError:
-            pass
         mock_pw.assert_called_once()
 
 

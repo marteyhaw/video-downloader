@@ -8,6 +8,7 @@ supports is discovered, with no site-specific code.
 
 from __future__ import annotations
 
+import logging
 import re
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
@@ -17,6 +18,8 @@ from backend.services.scanning.ytdlp_support import is_ytdlp_supported_url
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
+
+logger = logging.getLogger(__name__)
 
 # URL-bearing attributes commonly used to point at embedded players or links.
 _URL_ATTR_RE = re.compile(
@@ -69,8 +72,8 @@ def discover_embed_urls_from_page(page: Page) -> list[str]:
     for frame in page.frames:
         try:
             candidates.append(frame.url)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Could not read frame URL: %s", exc)
 
     try:
         dom_urls: list[str] = page.evaluate(
@@ -92,24 +95,30 @@ def discover_embed_urls_from_page(page: Page) -> list[str]:
         )
         for raw in dom_urls or []:
             candidates.append(urljoin(page.url, raw))
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("DOM embed-URL extraction failed: %s", exc)
 
     try:
         candidates.extend(_extract_url_attrs(page.content(), page.url))
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Page-content embed-URL extraction failed: %s", exc)
 
     return _keep_supported(candidates)
 
 
-register_embed_provider(
-    EmbedProviderConfig(
-        name="embed",
-        label="video",
-        discover_from_page=discover_embed_urls_from_page,
-        discover_from_html=discover_embed_urls_from_html,
-        enabled_setting="scan_embeds",
-        limit_setting="max_embeds",
+def register_generic_embeds() -> None:
+    """Register the single generic embed-discovery provider.
+
+    Idempotent: ``register_embed_provider`` skips a name that is already
+    registered, so calling this more than once is safe.
+    """
+    register_embed_provider(
+        EmbedProviderConfig(
+            name="embed",
+            label="video",
+            discover_from_page=discover_embed_urls_from_page,
+            discover_from_html=discover_embed_urls_from_html,
+            enabled_setting="scan_embeds",
+            limit_setting="max_embeds",
+        )
     )
-)

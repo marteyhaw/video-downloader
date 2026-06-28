@@ -5,6 +5,8 @@ interfaces by clicking through next buttons, load-more controls,
 thumbnails, and pagination links using generic semantic selectors.
 """
 
+import logging
+
 from playwright.sync_api import Locator, Page
 
 from backend.config import settings
@@ -19,6 +21,8 @@ from backend.services.playwright.gallery_selectors import (
 )
 from backend.services.scanning.progress import ScanProgressCallback, noop_progress
 
+logger = logging.getLogger(__name__)
+
 # --- Embed discovery helpers ---
 
 
@@ -29,8 +33,8 @@ def _discover_page_embeds(page: Page) -> PageEmbeds:
         try:
             for url in provider.discover_from_page(page):
                 embeds.add(provider.name, url)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Embed provider %r discover_from_page failed: %s", provider.name, exc)
     return embeds
 
 
@@ -53,10 +57,10 @@ def _merge_widget_embeds(into: PageEmbeds, widget: Locator, page: Page) -> None:
             try:
                 for url in provider.discover_from_html(html or "", base):
                     into.add(provider.name, url)
-            except Exception:
-                pass
-    except Exception:
-        pass
+            except Exception as exc:
+                logger.debug("Embed provider %r discover_from_html failed: %s", provider.name, exc)
+    except Exception as exc:
+        logger.debug("Widget HTML evaluation failed: %s", exc)
 
 
 # --- Page hydration ---
@@ -75,8 +79,8 @@ def hydrate_page_widgets(page: Page) -> None:
             selectors,
         )
         page.wait_for_timeout(500)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Widget scroll-into-view failed: %s", exc)
     try:
         page.evaluate(
             """() => {
@@ -88,8 +92,8 @@ def hydrate_page_widgets(page: Page) -> None:
             }"""
         )
         page.wait_for_timeout(800)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Page scroll pass failed: %s", exc)
 
 
 # --- Click helpers ---
@@ -103,8 +107,8 @@ def _try_click_first(page: Page, selectors: tuple[str, ...], *, timeout_ms: int)
             if loc.count() > 0:
                 loc.first.click(timeout=timeout_ms)
                 return True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Click on %r failed: %s", selector, exc)
     return False
 
 
@@ -125,10 +129,10 @@ def _try_click_in_widget(
                     if item.is_visible():
                         item.click(timeout=timeout_ms)
                         return True
-                except Exception:
-                    pass
-        except Exception:
-            pass
+                except Exception as exc:
+                    logger.debug("Widget item click on %r failed: %s", selector, exc)
+        except Exception as exc:
+            logger.debug("Widget locator %r failed: %s", selector, exc)
     return False
 
 
@@ -148,8 +152,8 @@ def _try_click_nth_in_widget(
                 if item.is_visible():
                     item.click(timeout=timeout_ms)
                     return True
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Nth-item click on %r failed: %s", selector, exc)
     return False
 
 
@@ -211,8 +215,8 @@ def _scroll_widget_internals(widget: Locator, page: Page) -> None:
             }"""
         )
         page.wait_for_timeout(200)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Widget internal-scroll failed: %s", exc)
 
 
 def _after_gallery_click(
@@ -225,8 +229,8 @@ def _after_gallery_click(
     if wait_ms > 0:
         try:
             page.wait_for_timeout(wait_ms)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Post-click wait failed: %s", exc)
     if widget is not None:
         _merge_widget_embeds(into, widget, page)
     else:
@@ -306,8 +310,8 @@ def _step_gallery_generic(
                         thumbs.nth(thumb_index).click(timeout=click_ms)
                         clicked = True
                         break
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.debug("Thumbnail click on %r failed: %s", selector, exc)
         if not clicked:
             break
         _after_gallery_click(into, page, None, wait_ms=wait_ms)
@@ -349,8 +353,8 @@ def step_galleries(
         except Exception:
             try:
                 widget.evaluate("el => el.scrollIntoView({ block: 'center', behavior: 'instant' })")
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Widget scroll-into-view fallback failed: %s", exc)
         page.wait_for_timeout(300)
         _merge_widget_embeds(into, widget, page)
         _scroll_widget_internals(widget, page)

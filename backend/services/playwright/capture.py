@@ -4,9 +4,13 @@ Tracks video URLs observed during page load and provides helper functions
 for building request headers and extracting page metadata (title, thumbnail).
 """
 
+import logging
+
 from playwright.sync_api import Page
 
 from backend.services.media.urls import USER_AGENT, is_video_capture_url
+
+logger = logging.getLogger(__name__)
 
 
 class CaptureState:
@@ -46,6 +50,6 @@ def extract_thumbnail(page: Page) -> str | None:
             value = page.locator(selector).first.get_attribute(attr, timeout=1000)
             if value and value.startswith(("http://", "https://")):
                 return value
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Thumbnail lookup via %r failed: %s", selector, exc)
     return None

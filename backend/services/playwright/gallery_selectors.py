@@ -5,6 +5,16 @@ stepping logic in ``gallery`` works across arbitrary sites with no
 per-site code.
 """
 
+# These constants are consumed by the sibling ``gallery`` module, not within
+# this file; ``__all__`` marks them as the module's intended public surface.
+__all__ = [
+    "_GALLERY_LOAD_MORE_SELECTORS",
+    "_GALLERY_NEXT_SELECTORS",
+    "_GALLERY_PAGINATION_SELECTORS",
+    "_GALLERY_THUMB_SELECTORS",
+    "_WIDGET_ROOT_SELECTORS",
+]
+
 _GALLERY_LOAD_MORE_SELECTORS = (
     'button:has-text("Load more")',
     'a:has-text("Load more")',

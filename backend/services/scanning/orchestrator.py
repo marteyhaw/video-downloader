@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import backend.services.embeds.generic_embeds as _generic_embeds  # noqa: F401  # register embed provider
 from backend.config import settings
 from backend.models.schemas import MediaItem, ScanResponse
 from backend.services.download.ytdlp_opts import YtdlpScanError
+from backend.services.embeds.generic_embeds import register_generic_embeds
 from backend.services.embeds.page_embeds import PageEmbeds
 from backend.services.embeds.registry import get_embed_providers
 from backend.services.playwright.scanner import merge_media_items, scan_playwright_sync
@@ -15,6 +15,9 @@ from backend.services.scanning.progress import ScanProgressCallback, noop_progre
 from backend.services.scanning.ytdlp_scanner import scan_ytdlp
 from backend.services.scanning.ytdlp_support import is_ytdlp_supported_url
 from backend.services.security import SecurityError, validate_url
+
+# Register the generic embed-discovery provider when the orchestrator loads.
+register_generic_embeds()
 
 
 class ScanFailedError(Exception):
@@ -146,7 +149,6 @@ def run_scan(
     # --- Phase 2: Playwright fallback + embed discovery ---
     playwright_items: list[MediaItem] = []
     playwright_title = ""
-    page_embeds = PageEmbeds()
 
     if not ytdlp_items:
         if ytdlp_error and is_ytdlp_supported_url(url):
