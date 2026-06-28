@@ -1,0 +1,4 @@
+# Normalize line endings: store LF in git and check out LF on every platform.
+# Without this, Windows checkouts get CRLF and trip oxfmt / format:check locally
+# even when the committed blob (and Linux CI) is clean LF.
+* text=auto eol=lf
