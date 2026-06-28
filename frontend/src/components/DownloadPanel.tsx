@@ -15,9 +15,9 @@ interface DownloadPanelProps {
   scan: ScanState;
   download: DownloadState;
   onDownload: (opts: { container: string; includeAudio: boolean; filename: string }) => void;
-  pageTopRef: React.RefObject<HTMLDivElement>;
-  scanSectionRef: React.RefObject<HTMLElement>;
-  downloadSectionRef: React.RefObject<HTMLElement>;
+  pageTopRef: React.RefObject<HTMLDivElement | null>;
+  scanSectionRef: React.RefObject<HTMLElement | null>;
+  downloadSectionRef: React.RefObject<HTMLElement | null>;
 }
 
 export function DownloadPanel({
