@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import type { HistoryEntry } from "../api/client";
 import { deleteHistory, renameHistory, revealInFolder } from "../api/client";
+import type { PushToastInput } from "../hooks/useToasts";
 import { HistoryTable } from "./HistoryTable";
 import { sectionClass, sectionTitleClass } from "./ui";
 
@@ -9,10 +10,16 @@ interface HistoryPanelProps {
   loading: boolean;
   error: string | null;
   onError: (message: string | null) => void;
+  onToast: (input: PushToastInput) => void;
 }
 
-export function HistoryPanel({ entries, loading, error, onError }: HistoryPanelProps) {
+export function HistoryPanel({ entries, loading, error, onError, onToast }: HistoryPanelProps) {
   const queryClient = useQueryClient();
+  // One refetch after a delete batch completes (not once per row), so the App's
+  // history-count + unread read-state re-sync via its history-query effects.
+  const refreshHistory = () => {
+    queryClient.invalidateQueries({ queryKey: ["history"] });
+  };
   return (
     <div role="tabpanel" id="panel-history" aria-labelledby="tab-history">
       <section className={sectionClass}>
@@ -41,15 +48,16 @@ export function HistoryPanel({ entries, loading, error, onError }: HistoryPanelP
             }
           }}
           onDelete={async (id, deleteFile) => {
-            try {
-              onError(null);
-              await deleteHistory(id, deleteFile);
-              queryClient.invalidateQueries({ queryKey: ["history"] });
-            } catch (e) {
-              onError((e as Error).message);
-              throw e;
-            }
+            // Network only — no cache invalidation here (HistoryTable batches
+            // that into a single onChanged after the whole delete completes) and
+            // no banner: results surface via toast so bulk deletes can aggregate.
+            // Clear any stale rename/reveal banner; rethrow so the caller can
+            // track per-item failures.
+            onError(null);
+            await deleteHistory(id, deleteFile);
           }}
+          onChanged={refreshHistory}
+          onToast={onToast}
         />
       </section>
     </div>

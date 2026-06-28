@@ -51,7 +51,7 @@ async def _download_playwright_hls(request: DownloadRequest, output_path: Path) 
     }
     audio = _best_audio_selector(request.container)
     if request.include_audio:
-        ydl_opts["format"] = f"bestvideo+{audio}/best"
+        ydl_opts["format"] = f"bestvideo+({audio})/best"
     else:
         ydl_opts["format"] = "bestvideo"
 
@@ -100,13 +100,13 @@ async def _download_ytdlp(request: DownloadRequest, output_path: Path) -> Path:
     audio = _best_audio_selector(request.container)
     if request.format_id:
         if request.include_audio:
-            ydl_opts["format"] = f"{request.format_id}+{audio}/best"
+            ydl_opts["format"] = f"{request.format_id}+({audio})/best"
         else:
             ydl_opts["format"] = request.format_id
     elif not request.include_audio:
         ydl_opts["format"] = "bestvideo"
     else:
-        ydl_opts["format"] = f"bestvideo+{audio}/best"
+        ydl_opts["format"] = f"bestvideo+({audio})/best"
 
     def run():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
