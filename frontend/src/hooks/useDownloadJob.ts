@@ -9,7 +9,7 @@ import {
 } from "../api/client";
 import { maxHistoryId } from "../utils/historyReadState";
 import { basenameFromPath } from "../utils/format";
-import { useToasts, type PushToastInput } from "./useToasts";
+import type { PushToastInput } from "./useToasts";
 
 export interface DownloadJobState {
   activeJobId: string | null;
@@ -22,14 +22,13 @@ export interface DownloadJobState {
     opts: { container: string; includeAudio: boolean; filename: string },
     pageUrl: string,
   ) => void;
-  toasts: ReturnType<typeof useToasts>["toasts"];
-  pushToast: (input: PushToastInput) => void;
-  dismissToast: (id: string) => void;
 }
 
-export function useDownloadJob(onHistoryUpdate: (maxId: number) => void): DownloadJobState {
+export function useDownloadJob(
+  onHistoryUpdate: (maxId: number) => void,
+  pushToast: (input: PushToastInput) => void,
+): DownloadJobState {
   const queryClient = useQueryClient();
-  const { toasts, pushToast, dismissToast } = useToasts();
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
   const [jobProgress, setJobProgress] = useState(0);
   const [jobStage, setJobStage] = useState("");
@@ -148,8 +147,5 @@ export function useDownloadJob(onHistoryUpdate: (maxId: number) => void): Downlo
     jobError,
     downloading: downloadMutation.isPending || !!activeJobId,
     handleDownload,
-    toasts,
-    pushToast,
-    dismissToast,
   };
 }

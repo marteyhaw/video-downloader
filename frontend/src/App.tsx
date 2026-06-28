@@ -7,6 +7,7 @@ import { ThemeSwitcher } from "./components/ThemeSwitcher";
 import { ToastStack } from "./components/ToastStack";
 import { useDownloadJob } from "./hooks/useDownloadJob";
 import { useScan } from "./hooks/useScan";
+import { useToasts } from "./hooks/useToasts";
 import {
   hasUnreadHistory as computeHasUnread,
   maxHistoryId,
@@ -40,6 +41,7 @@ export default function App() {
   lastSeenRef.current = lastSeenHistoryMaxId;
 
   const queryClient = useQueryClient();
+  const { toasts, pushToast, dismissToast } = useToasts();
 
   const scan = useScan();
 
@@ -60,7 +62,7 @@ export default function App() {
     [markHistorySeen],
   );
 
-  const download = useDownloadJob(onHistoryUpdate);
+  const download = useDownloadJob(onHistoryUpdate, pushToast);
 
   const health = useQuery({
     queryKey: ["health"],
@@ -223,17 +225,18 @@ export default function App() {
           loading={history.isLoading}
           error={historyFetchError}
           onError={setHistoryError}
+          onToast={pushToast}
         />
       )}
 
       <ToastStack
-        toasts={download.toasts}
-        onDismiss={download.dismissToast}
+        toasts={toasts}
+        onDismiss={dismissToast}
         onRevealInFolder={async (id) => {
           try {
             await revealInFolder(id);
           } catch (e) {
-            download.pushToast({
+            pushToast({
               variant: "error",
               title: "Could not open folder",
               description: (e as Error).message,
