@@ -63,6 +63,15 @@ async def _download_playwright_hls(request: DownloadRequest, output_path: Path) 
     return resolve_file_by_stem(output_path)
 
 
+async def _validate_each_hop(request: httpx.Request) -> None:
+    """Re-validate every request URL, including redirect targets.
+
+    ``follow_redirects=True`` would otherwise let a validated public URL 3xx
+    into a private/loopback host, bypassing the initial SSRF check (CWE-918).
+    """
+    validate_url(str(request.url))
+
+
 async def _download_direct(url: str, output_path: Path, referer: str | None) -> None:
     validate_url(url)
     headers = {"User-Agent": USER_AGENT}
@@ -70,7 +79,11 @@ async def _download_direct(url: str, output_path: Path, referer: str | None) -> 
         headers["Referer"] = referer
 
     try:
-        async with httpx.AsyncClient(timeout=settings.download_timeout_seconds, follow_redirects=True) as client:
+        async with httpx.AsyncClient(
+            timeout=settings.download_timeout_seconds,
+            follow_redirects=True,
+            event_hooks={"request": [_validate_each_hop]},
+        ) as client:
             async with client.stream("GET", url, headers=headers) as resp:
                 resp.raise_for_status()
                 downloaded = 0

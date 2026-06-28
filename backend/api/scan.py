@@ -76,7 +76,9 @@ async def scan_stream(url: str = Query(..., min_length=1)):
                 }
             )
         except Exception as exc:
-            logger.exception("Unexpected error during SSE scan for %s", url)
+            # Strip CR/LF so a crafted URL can't forge extra log lines (CWE-117).
+            safe_url = url.replace("\r", "").replace("\n", "")
+            logger.exception("Unexpected error during SSE scan for %s", safe_url)
             await queue.put(
                 {
                     "stage": "error",
