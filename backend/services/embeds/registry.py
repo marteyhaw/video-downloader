@@ -9,8 +9,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from playwright.sync_api import Page
 
-DiscoverFromPage = Callable[["Page"], list[str]]
-DiscoverFromHTML = Callable[[str, str], list[str]]
+    DiscoverFromPage = Callable[[Page], list[str]]
+    DiscoverFromHTML = Callable[[str, str], list[str]]
+else:
+    DiscoverFromPage = Callable[..., list[str]]
+    DiscoverFromHTML = Callable[..., list[str]]
 
 
 @dataclass

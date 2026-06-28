@@ -4,10 +4,14 @@ Handles clicking play buttons and triggering video playback on pages with
 lazy-loaded or click-to-play media players.
 """
 
+import logging
+
 from playwright.sync_api import Page
 
 from backend.config import settings
 from backend.services.scanning.ytdlp_support import is_ytdlp_supported_url
+
+logger = logging.getLogger(__name__)
 
 # Generic selectors first, then best-effort heuristics for popular player
 # libraries (Video.js, Plyr, JW Player).  These supplement the generic
@@ -40,8 +44,8 @@ def _safe_click_first(page: Page, selector: str, *, timeout_ms: int | None = Non
     ms = timeout_ms if timeout_ms is not None else _click_timeout_ms()
     try:
         page.locator(selector).first.click(timeout=ms)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Autoplay click on %r failed: %s", selector, exc)
 
 
 def should_run_autoplay(had_media_urls: bool, page_url: str) -> bool:
@@ -67,8 +71,8 @@ def trigger_playback(page: Page) -> None:
                 try { el.muted = true; el.play(); } catch (e) {}
             }"""
         )
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Main-frame video playback trigger failed: %s", exc)
 
     for selector in _PLAY_SELECTORS:
         _safe_click_first(page, selector, timeout_ms=click_ms)
@@ -91,17 +95,17 @@ def trigger_playback(page: Page) -> None:
                     try { el.muted = true; el.play(); } catch (e) {}
                 }"""
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("Sub-frame video playback trigger failed: %s", exc)
         for selector in _PLAY_SELECTORS[:3]:
             try:
                 frame.locator(selector).first.click(timeout=click_ms)
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Sub-frame play-button click on %r failed: %s", selector, exc)
 
     try:
         viewport = page.viewport_size
         if viewport:
             page.mouse.click(viewport["width"] // 2, viewport["height"] // 2)
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.debug("Center-viewport click failed: %s", exc)

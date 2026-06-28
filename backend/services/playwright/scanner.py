@@ -93,8 +93,8 @@ def scan_playwright_sync(
             def on_response(response):
                 try:
                     state.add(response.url, response.headers.get("content-type"))
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.debug("Response capture failed for %s: %s", response.url, exc)
 
             page.on("response", on_response)
 
@@ -110,8 +110,8 @@ def scan_playwright_sync(
                 try:
                     page.evaluate("window.scrollTo(0, document.body.scrollHeight / 2)")
                     page.wait_for_timeout(1500)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.debug("Mid-page scroll failed: %s", exc)
 
                 state.page_title = page.title()
                 state.thumbnail_url = extract_thumbnail(page)

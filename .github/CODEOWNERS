@@ -1,0 +1,4 @@
+# Default owner for everything in this repo. Required for the OpenSSF
+# Scorecard Branch-Protection check (codeowners review) and to route PR
+# review requests automatically.
+* @marteyhaw
