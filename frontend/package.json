@@ -15,10 +15,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@floating-ui/react": "0.27.19",
-    "@formkit/auto-animate": "0.9.0",
+    "@floating-ui/react": "0.27.20",
+    "@formkit/auto-animate": "0.10.0",
     "@tailwindcss/vite": "4.3.1",
-    "@tanstack/react-query": "5.101.0",
+    "@tanstack/react-query": "5.101.2",
     "lucide-react": "1.16.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
@@ -27,11 +27,11 @@
   "devDependencies": {
     "@types/react": "19.2.17",
     "@types/react-dom": "18.3.1",
-    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-react": "6.0.3",
     "oxfmt": "0.50.0",
     "oxlint": "1.66.0",
     "typescript": "6.0.3",
     "vite": "8.0.16",
-    "vitest": "4.1.9"
+    "vitest": "4.1.10"
   }
 }
