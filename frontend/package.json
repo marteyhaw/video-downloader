@@ -30,7 +30,7 @@
     "@vitejs/plugin-react": "6.0.5",
     "oxfmt": "0.50.0",
     "oxlint": "1.66.0",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "vite": "8.2.1",
     "vitest": "4.1.10"
   }
