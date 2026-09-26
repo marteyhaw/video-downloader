@@ -7,12 +7,12 @@ license = { text = "MIT" }
 requires-python = ">=3.11"
 dependencies = [
     "fastapi==0.141.1",
-    "uvicorn[standard]==0.52.4",
-    "playwright==1.62.0",
+    "uvicorn[standard]==0.53.0",
+    "playwright==1.63.0",
     "yt-dlp[curl-cffi]==2026.8.19",
     "m3u8==6.0.0",
     "httpx==0.28.1",
-    "sqlalchemy==2.0.52",
+    "sqlalchemy==2.0.54",
     "aiosqlite==0.22.1",
     "filetype==1.2.0",
     "pydantic-settings==2.15.0",
@@ -35,7 +35,7 @@ dev = [
     "pytest-cov==7.1.0",
     "httpx==0.28.1",
     "pre-commit==4.6.2",
-    "ruff==0.16.5",
+    "ruff==0.16.8",
 ]
 
 [tool.pytest.ini_options]
